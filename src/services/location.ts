@@ -10,12 +10,12 @@ export interface LocationExtractorService {
 export const DEFAULT_TITLE = "Quality Picker";
 
 export const TITLE_PARAM_NAME = "title";
-export const OPTIONS_PARAM_NAME = "options";
+export const OPTIONS_PARAM_NAME = "option";
 export const SUBMIT_LABEL_PARAM_NAME = "submitLabel";
 
 export class WindowLocationExtractorService
   implements LocationExtractorService {
-  constructor(protected window: Window) {}
+  constructor(protected window: Window) { }
 
   getTitle() {
     return this.getStringParam(TITLE_PARAM_NAME);
@@ -43,8 +43,8 @@ export class WindowLocationExtractorService
     return typeof parsed === "string"
       ? parsed
       : parsed instanceof Array
-      ? parsed[0]
-      : undefined;
+        ? parsed[0]
+        : undefined;
   }
 
   protected getArrayParam(name: string): string[] {
@@ -52,8 +52,8 @@ export class WindowLocationExtractorService
     return parsed instanceof Array
       ? parsed
       : typeof parsed === "string"
-      ? [parsed]
-      : [];
+        ? [parsed]
+        : [];
   }
 }
 

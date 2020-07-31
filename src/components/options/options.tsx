@@ -1,9 +1,12 @@
 import React, { useState, useCallback } from "react";
+import produce from "immer";
 
 import FormGroup from "@material-ui/core/FormGroup";
 
 import { useOptions } from "../../services/location";
 import { Option } from "./option";
+
+type OptionsState = Partial<Record<string, boolean>>;
 
 export const Options: React.FC = () => {
   const options = useOptions();
@@ -21,25 +24,24 @@ export const Options: React.FC = () => {
       const otherName =
         otherNames[Math.floor(Math.random() * otherNames.length)];
 
-      if (name in state) {
-        setState({
-          ...state,
-          [name]: value,
-          [otherName]: value ? false : state[otherName]
-        });
-      }
+      setState(
+        produce((state: OptionsState) => {
+          if (name in state) state[name] = value;
+          if (value && otherName in state) state[otherName] = false;
+        })
+      );
     },
     [state]
   );
 
   return (
     <FormGroup>
-      {Object.keys(state).map(name => (
+      {Object.keys(state).map((name) => (
         <Option
           key={name}
           name={name}
           value={!!state[name]}
-          onChange={value => updateOption(name, value)}
+          onChange={(value) => updateOption(name, value)}
         />
       ))}
     </FormGroup>
@@ -47,7 +49,7 @@ export const Options: React.FC = () => {
 };
 
 const optionsToState = (options: string[]) =>
-  options.reduce<Partial<Record<string, boolean>>>((state, option) => {
+  options.reduce<OptionsState>((state, option) => {
     state[option] = false;
     return state;
   }, {});
