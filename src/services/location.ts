@@ -8,6 +8,7 @@ export interface LocationExtractorService {
 }
 
 export const DEFAULT_TITLE = "Quality Picker";
+export const DEFAULT_SUBMIT_LABEL = "Accept";
 
 export const TITLE_PARAM_NAME = "title";
 export const OPTIONS_PARAM_NAME = "option";
