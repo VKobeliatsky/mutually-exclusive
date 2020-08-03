@@ -1,10 +1,17 @@
-import { parse } from "query-string";
+import { parse, stringify } from "query-string";
 import { useServices } from "./hooks";
+
+interface Params {
+  title?: string,
+  submitLabel?: string,
+  options?: string[]
+}
 
 export interface LocationExtractorService {
   getTitle(): string | undefined;
   getOptions(): string[];
   getSubmitLabel(): string | undefined;
+  getShareLink(params: Params): string
 }
 
 export const DEFAULT_TITLE = "Quality Picker";
@@ -13,6 +20,16 @@ export const DEFAULT_SUBMIT_LABEL = "Accept";
 export const TITLE_PARAM_NAME = "title";
 export const OPTIONS_PARAM_NAME = "option";
 export const SUBMIT_LABEL_PARAM_NAME = "submitLabel";
+
+const paramsToQueryString = ({
+  title = DEFAULT_TITLE,
+  submitLabel = DEFAULT_SUBMIT_LABEL,
+  options = [],
+}: Params) => stringify({
+  [TITLE_PARAM_NAME]: title,
+  [SUBMIT_LABEL_PARAM_NAME]: submitLabel,
+  [OPTIONS_PARAM_NAME]: options,
+});
 
 export class WindowLocationExtractorService
   implements LocationExtractorService {
@@ -28,6 +45,10 @@ export class WindowLocationExtractorService
 
   getSubmitLabel() {
     return this.getStringParam(SUBMIT_LABEL_PARAM_NAME);
+  }
+
+  getShareLink(params: Params) {
+    return `${this.window.location.href}?${paramsToQueryString(params)}`;
   }
 
   protected get location() {
