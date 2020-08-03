@@ -1,1 +1,1 @@
-export * from './screen-action';
+export * from "./screen-action";

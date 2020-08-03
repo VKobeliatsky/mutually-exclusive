@@ -8,5 +8,5 @@ export interface Services {
 export const ServicesContext = createContext<{ services: Services }>({
   get services(): Services {
     throw Error("services are not provided");
-  }
+  },
 });

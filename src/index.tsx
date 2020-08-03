@@ -8,7 +8,7 @@ const rootElement = document.getElementById("root");
 render(
   <Root
     services={{
-      locationExtractor: new WindowLocationExtractorService(window)
+      locationExtractor: new WindowLocationExtractorService(window),
     }}
   />,
   rootElement

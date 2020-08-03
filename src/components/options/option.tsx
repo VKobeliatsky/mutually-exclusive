@@ -13,7 +13,7 @@ export const Option: React.FC<{
     control={
       <Switch
         checked={value}
-        onChange={e => onChange(e.target.checked)}
+        onChange={(e) => onChange(e.target.checked)}
         name={name}
       />
     }

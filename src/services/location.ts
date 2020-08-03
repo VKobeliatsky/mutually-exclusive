@@ -2,16 +2,16 @@ import { parse, stringify } from "query-string";
 import { useServices } from "./hooks";
 
 interface Params {
-  title?: string,
-  submitLabel?: string,
-  options?: string[]
+  title?: string;
+  submitLabel?: string;
+  options?: string[];
 }
 
 export interface LocationExtractorService {
   getTitle(): string | undefined;
   getOptions(): string[];
   getSubmitLabel(): string | undefined;
-  getShareLink(params: Params): string
+  getShareLink(params: Params): string;
 }
 
 export const DEFAULT_TITLE = "Quality Picker";
@@ -25,15 +25,16 @@ const paramsToQueryString = ({
   title = DEFAULT_TITLE,
   submitLabel = DEFAULT_SUBMIT_LABEL,
   options = [],
-}: Params) => stringify({
-  [TITLE_PARAM_NAME]: title,
-  [SUBMIT_LABEL_PARAM_NAME]: submitLabel,
-  [OPTIONS_PARAM_NAME]: options,
-});
+}: Params) =>
+  stringify({
+    [TITLE_PARAM_NAME]: title,
+    [SUBMIT_LABEL_PARAM_NAME]: submitLabel,
+    [OPTIONS_PARAM_NAME]: options,
+  });
 
 export class WindowLocationExtractorService
   implements LocationExtractorService {
-  constructor(protected window: Window) { }
+  constructor(protected window: Window) {}
 
   getTitle() {
     return this.getStringParam(TITLE_PARAM_NAME);
@@ -65,8 +66,8 @@ export class WindowLocationExtractorService
     return typeof parsed === "string"
       ? parsed
       : parsed instanceof Array
-        ? parsed[0]
-        : undefined;
+      ? parsed[0]
+      : undefined;
   }
 
   protected getArrayParam(name: string): string[] {
@@ -74,8 +75,8 @@ export class WindowLocationExtractorService
     return parsed instanceof Array
       ? parsed
       : typeof parsed === "string"
-        ? [parsed]
-        : [];
+      ? [parsed]
+      : [];
   }
 }
 
