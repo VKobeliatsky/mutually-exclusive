@@ -1,6 +1,6 @@
 import React from "react";
 
-import Container from "@material-ui/core/Container";
+import { Container, Fade, Box } from "@material-ui/core";
 import { makeStyles } from "@material-ui/core/styles";
 import { PageTitle } from "../page-title";
 import { DEFAULT_TITLE, useTitle } from "../../services/location";
@@ -16,13 +16,14 @@ export const AppScreen: React.FC<{
 }> = ({ children }) => {
   const classes = useStyles();
   const title = useTitle() || DEFAULT_TITLE;
-
   return (
-    <>
-      <PageTitle value={title} />
-      <Container className={classes.root} maxWidth="sm">
-        {children}
-      </Container>
-    </>
+    <Fade in appear>
+      <Box>
+        <PageTitle value={title} />
+        <Container className={classes.root} maxWidth="sm">
+          {children}
+        </Container>
+      </Box>
+    </Fade>
   );
 };

@@ -14,7 +14,7 @@ export interface LocationExtractorService {
   getShareLink(params: Params): string;
 }
 
-export const DEFAULT_TITLE = "Quality Picker";
+export const DEFAULT_TITLE = "Choose what you like";
 export const DEFAULT_SUBMIT_LABEL = "Accept";
 
 export const TITLE_PARAM_NAME = "title";
@@ -49,7 +49,9 @@ export class WindowLocationExtractorService
   }
 
   getShareLink(params: Params) {
-    return `${this.window.location.href}?${paramsToQueryString(params)}`;
+    return `${this.window.location.origin}${
+      this.window.location.pathname
+    }?${paramsToQueryString(params)}`;
   }
 
   protected get location() {

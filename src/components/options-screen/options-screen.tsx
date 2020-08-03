@@ -28,7 +28,12 @@ export const OptionsScreen: React.FC<{ onSubmit?(): void }> = ({
           <Options />
         </CardContent>
         <CardActions>
-          <Button variant="contained" color="primary" onClick={onSubmit}>
+          <Button
+            fullWidth
+            variant="contained"
+            color="primary"
+            onClick={onSubmit}
+          >
             {submitLabel}
           </Button>
         </CardActions>

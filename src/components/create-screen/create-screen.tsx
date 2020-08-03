@@ -9,6 +9,10 @@ import {
   InputAdornment,
   Icon,
   IconButton,
+  Snackbar,
+  CardActions,
+  Button,
+  Collapse,
 } from "@material-ui/core";
 import { DEFAULT_TITLE, DEFAULT_SUBMIT_LABEL } from "../../services/location";
 import produce from "immer";
@@ -30,6 +34,8 @@ export const CreateScreen: React.FC = () => {
     submitLabel: locationExtractor.getSubmitLabel() || DEFAULT_SUBMIT_LABEL,
     options: locationExtractor.getOptions(),
   });
+
+  const hasEnoughOptions = options.length > 1;
 
   const shareLink = locationExtractor.getShareLink({
     title,
@@ -86,12 +92,20 @@ export const CreateScreen: React.FC = () => {
     );
   }, []);
 
-  const copyLinkToClipboard = useCallback(() => {
-    shareLinkInputRef.current?.select();
-    shareLinkInputRef.current?.setSelectionRange(0, 9999);
+  const [isInfoShown, setInfoShown] = useState(false);
+  const closeInfo = useCallback(() => setInfoShown(false), []);
+  const showInfo = useCallback(() => setInfoShown(true), []);
 
-    document.execCommand("copy");
-  }, []);
+  const copyLinkToClipboard = useCallback(() => {
+    const { current } = shareLinkInputRef;
+    if (current) {
+      shareLinkInputRef.current?.select();
+      shareLinkInputRef.current?.setSelectionRange(0, 9999);
+
+      document.execCommand("copy");
+      showInfo();
+    }
+  }, [showInfo]);
 
   return (
     <AppScreen>
@@ -115,24 +129,26 @@ export const CreateScreen: React.FC = () => {
             onChange={(e) => updateSubmitLabel(e.target.value)}
           />
           {options.map((option, index) => (
-            <TextField
-              key={index}
-              fullWidth
-              margin="normal"
-              variant="outlined"
-              label="Edit Option"
-              value={option}
-              onChange={(e) => updateOption(e.target.value, index)}
-              InputProps={{
-                endAdornment: (
-                  <InputAdornment position="end">
-                    <IconButton onClick={() => removeOption(index)}>
-                      <Icon>close</Icon>
-                    </IconButton>
-                  </InputAdornment>
-                ),
-              }}
-            />
+            <Collapse in appear>
+              <TextField
+                key={index}
+                fullWidth
+                margin="normal"
+                variant="outlined"
+                label="Edit Option"
+                value={option}
+                onChange={(e) => updateOption(e.target.value, index)}
+                InputProps={{
+                  endAdornment: (
+                    <InputAdornment position="end">
+                      <IconButton onClick={() => removeOption(index)}>
+                        <Icon>close</Icon>
+                      </IconButton>
+                    </InputAdornment>
+                  ),
+                }}
+              />
+            </Collapse>
           ))}
           <TextField
             fullWidth
@@ -144,25 +160,61 @@ export const CreateScreen: React.FC = () => {
             onBlur={(e) => addOption(newOption)}
             onKeyUp={(e) => e.keyCode === 13 && addOption(newOption)}
           />
-          <TextField
-            fullWidth
-            inputRef={shareLinkInputRef}
-            margin="normal"
-            variant="outlined"
-            label="Share"
-            value={shareLink}
-            InputProps={{
-              endAdornment: (
-                <InputAdornment position="end">
-                  <IconButton onClick={copyLinkToClipboard}>
-                    <Icon>share</Icon>
-                  </IconButton>
-                </InputAdornment>
-              ),
-            }}
-          />
+          <Collapse in={!hasEnoughOptions} mountOnEnter unmountOnExit>
+            <Typography variant="caption">
+              At least two options make sense
+            </Typography>
+          </Collapse>
+          <Collapse
+            in={hasEnoughOptions}
+            mountOnEnter={true}
+            unmountOnExit={true}
+          >
+            <TextField
+              fullWidth
+              inputRef={shareLinkInputRef}
+              margin="normal"
+              variant="outlined"
+              label="Share"
+              value={shareLink}
+              InputProps={{
+                endAdornment: (
+                  <InputAdornment position="end">
+                    <IconButton onClick={copyLinkToClipboard}>
+                      <Icon>share</Icon>
+                    </IconButton>
+                  </InputAdornment>
+                ),
+              }}
+            />
+          </Collapse>
         </CardContent>
+        <Collapse
+          in={hasEnoughOptions}
+          mountOnEnter={true}
+          unmountOnExit={true}
+        >
+          <CardActions>
+            <Button
+              href={shareLink}
+              target="_blank"
+              startIcon={<Icon>launch</Icon>}
+              variant="contained"
+              color="primary"
+              fullWidth
+            >
+              Open
+            </Button>
+          </CardActions>
+        </Collapse>
       </Card>
+      <Snackbar
+        message="Link copied to clipboard"
+        anchorOrigin={{ vertical: "bottom", horizontal: "center" }}
+        open={isInfoShown}
+        autoHideDuration={6000}
+        onClose={closeInfo}
+      />
     </AppScreen>
   );
 };
