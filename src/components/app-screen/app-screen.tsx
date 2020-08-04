@@ -3,7 +3,10 @@ import React from "react";
 import { Container, Fade, Box } from "@material-ui/core";
 import { makeStyles } from "@material-ui/core/styles";
 import { PageTitle } from "../page-title";
-import { DEFAULT_TITLE, useTitle } from "../../services/location";
+import {
+  useTitle,
+  DEFAULT_TITLE,
+} from "../../services/location-extractor-service/common";
 
 const useStyles = makeStyles({
   root: {

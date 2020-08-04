@@ -4,15 +4,15 @@ import Card from "@material-ui/core/Card";
 import CardContent from "@material-ui/core/CardContent";
 import Typography from "@material-ui/core/Typography";
 
+import { AppScreen } from "../app-screen";
+import { Options } from "../options";
+import { CardActions, Button } from "@material-ui/core";
 import {
   useTitle,
   DEFAULT_TITLE,
   useSubmitLabel,
   DEFAULT_SUBMIT_LABEL,
-} from "../../services/location";
-import { AppScreen } from "../app-screen";
-import { Options } from "../options";
-import { CardActions, Button } from "@material-ui/core";
+} from "../../services/location-extractor-service/common";
 
 export const OptionsScreen: React.FC<{ onSubmit?(): void }> = ({
   onSubmit,

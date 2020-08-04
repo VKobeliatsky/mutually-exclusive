@@ -3,8 +3,8 @@ import produce from "immer";
 
 import FormGroup from "@material-ui/core/FormGroup";
 
-import { useOptions } from "../../services/location";
 import { Option } from "./option";
+import { useOptions } from "../../services/location-extractor-service/common";
 
 type OptionsState = Partial<Record<string, boolean>>;
 

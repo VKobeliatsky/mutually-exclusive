@@ -3,7 +3,7 @@ import React, { useState, useCallback } from "react";
 import { OptionsScreen } from "../options-screen";
 import { CongratulationsScreen } from "../congratulation-screen";
 import { CreateScreen } from "../create-screen";
-import { useOptions } from "../../services/location";
+import { useOptions } from "../../services/location-extractor-service/common";
 
 export const App: React.FC = () => {
   const options = useOptions();

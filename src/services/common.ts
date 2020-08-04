@@ -1,5 +1,5 @@
 import { createContext } from "react";
-import { LocationExtractorService } from "./location";
+import { LocationExtractorService } from "./location-extractor-service";
 
 export interface Services {
   locationExtractor: LocationExtractorService;

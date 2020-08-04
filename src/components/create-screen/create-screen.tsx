@@ -1,4 +1,4 @@
-import React, { useState, useCallback, useRef } from "react";
+import React, { useState, useCallback, useRef, useMemo } from "react";
 
 import { AppScreen } from "../app-screen";
 import {
@@ -14,9 +14,12 @@ import {
   Button,
   Collapse,
 } from "@material-ui/core";
-import { DEFAULT_TITLE, DEFAULT_SUBMIT_LABEL } from "../../services/location";
 import produce from "immer";
 import { useServices } from "../../services";
+import {
+  DEFAULT_TITLE,
+  DEFAULT_SUBMIT_LABEL,
+} from "../../services/location-extractor-service/common";
 
 type CreateScreenState = {
   title: string;
@@ -37,11 +40,10 @@ export const CreateScreen: React.FC = () => {
 
   const hasEnoughOptions = options.length > 1;
 
-  const shareLink = locationExtractor.getShareLink({
-    title,
-    submitLabel,
-    options,
-  });
+  const shareLink = useMemo(
+    () => locationExtractor.getShareLink({ title, submitLabel, options }),
+    [locationExtractor, title, submitLabel, options]
+  );
 
   const shareLinkInputRef = useRef<HTMLInputElement>(null);
 
@@ -129,9 +131,8 @@ export const CreateScreen: React.FC = () => {
             onChange={(e) => updateSubmitLabel(e.target.value)}
           />
           {options.map((option, index) => (
-            <Collapse in appear>
+            <Collapse key={index} in appear>
               <TextField
-                key={index}
                 fullWidth
                 margin="normal"
                 variant="outlined"
