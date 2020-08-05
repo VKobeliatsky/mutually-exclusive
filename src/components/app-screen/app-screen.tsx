@@ -11,6 +11,7 @@ import {
 const useStyles = makeStyles({
   root: {
     marginTop: "12%",
+    marginBottom: "12%",
   },
 });
 
